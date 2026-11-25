@@ -1,3 +1,320 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>Portfolio</title></head>
-<body><h1>Portfolio coming soon</h1></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>John Michael Ponte | Virtual Assistant & AI Automation</title>
+<meta name="description" content="Virtual Assistant for AI automation, CRM, real estate and marketing. n8n workflows, Claude Code, video editing and design.">
+<meta property="og:title" content="John Michael Ponte | Virtual Assistant & AI Automation">
+<meta property="og:description" content="n8n & Claude Code automation, CRM, real estate and marketing support.">
+<meta property="og:image" content="assets/img/hero.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--card:#131313;--line:#232323;--text:#ececec;--muted:#9b9b9b;--y:#f5c518;--r:14px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+img,video{display:block;max-width:100%;height:auto}
+a{color:var(--y);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+section{padding:88px 0;border-top:1px solid var(--line)}
+h1,h2,h3{line-height:1.15;margin:0}
+h2{font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:12px}
+h2 em,h1 em{font-style:normal;color:var(--y)}
+h3{font-size:19px;font-weight:600}
+.kicker{color:var(--y);font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;margin-bottom:10px}
+.lead{color:var(--muted);max-width:680px;margin:0 0 40px}
+.muted{color:var(--muted)}
+/* nav */
+nav{position:sticky;top:0;z-index:10;background:rgba(10,10,10,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+nav .logo{font-weight:800;color:var(--text)}
+nav .logo span{color:var(--y)}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-size:14px}
+nav ul a{color:var(--muted)}
+nav ul a:hover{color:var(--text);text-decoration:none}
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-top:56px;border:0}
+.hero h1{font-size:clamp(40px,6.5vw,72px);font-weight:800;letter-spacing:-.02em}
+.hero .role{font-size:clamp(17px,2vw,20px);color:var(--muted);margin:18px 0 6px}
+.hero .tag{font-size:18px;color:var(--y);font-weight:600;margin:0 0 32px}
+.hero img{border-radius:var(--r);border:1px solid var(--line)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;padding:13px 22px;border-radius:999px;font-weight:600;border:1px solid var(--y);color:var(--y)}
+.btn.solid{background:var(--y);color:#0a0a0a}
+.btn:hover{text-decoration:none;filter:brightness(1.1)}
+/* cards & grids */
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.card p{margin:8px 0 0;color:var(--muted);font-size:15px}
+.card .num{color:var(--y);font-weight:800;font-size:14px;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font-size:12.5px;padding:5px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+.chip.y{border-color:rgba(245,197,24,.45);color:var(--y)}
+/* claude code highlight */
+.cc{background:linear-gradient(180deg,#0f0d04,var(--bg) 70%)}
+.cc .card{border-color:#2b2610}
+/* projects */
+.proj{display:grid;grid-template-columns:1.25fr 1fr;gap:28px;align-items:center;margin-bottom:28px}
+.proj .shot{background:#1b1b1b;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.proj ul{margin:12px 0 0;padding-left:18px;color:var(--muted);font-size:15px}
+.proj li{margin:4px 0}
+.zoom{font-size:12.5px;color:var(--muted);margin-top:8px}
+/* media */
+.reels{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.reels video,.tvid video{border-radius:var(--r);border:1px solid var(--line);background:#000;width:100%}
+.reels figcaption{font-size:14px;color:var(--muted);margin-top:8px}
+.scroller{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(170px,1fr);gap:14px;overflow-x:auto;padding-bottom:8px}
+.gallery img,.scroller img{border-radius:10px;border:1px solid var(--line);width:100%}
+.sub{margin:44px 0 16px;font-size:15px;font-weight:600;color:var(--text)}
+/* testimonials */
+.tcard{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+blockquote{margin:0;font-size:19px;line-height:1.5}
+blockquote::before{content:"\201C";display:block;color:var(--y);font-size:56px;line-height:.6;font-weight:800}
+.who{margin-top:14px;color:var(--muted);font-size:14px}
+/* experience */
+.xp{border-left:2px solid var(--line);padding-left:22px}
+.xp div{position:relative;margin-bottom:26px}
+.xp div::before{content:"";position:absolute;left:-29px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--y)}
+.xp b{display:block}
+.xp span{color:var(--muted);font-size:14px}
+.xp p{margin:4px 0 0;color:var(--muted);font-size:15px}
+/* contact */
+.contact{text-align:center}
+.contact .lead{margin:0 auto 30px}
+.contact .btns{justify-content:center}
+footer{padding:28px 0;color:var(--muted);font-size:13px;text-align:center;border-top:1px solid var(--line)}
+@media (max-width:860px){
+  nav ul{display:none}
+  .hero,.proj,.tcard{grid-template-columns:1fr}
+  .hero{padding-top:32px}
+  .g3,.g4{grid-template-columns:repeat(2,1fr)}
+  .reels{grid-template-columns:1fr 1fr}
+  section{padding:64px 0}
+}
+@media (max-width:520px){.g2,.g3,.g4{grid-template-columns:1fr}.reels{gap:10px}}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="logo" href="#top">JM<span>.</span>Ponte</a>
+  <ul>
+    <li><a href="#claude-code">Claude Code</a></li>
+    <li><a href="#automation">Automation</a></li>
+    <li><a href="#video">Video</a></li>
+    <li><a href="#design">Design</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</div></nav>
+
+<header id="top" class="wrap hero">
+  <div>
+    <div class="kicker">Virtual Assistant</div>
+    <h1>John Michael<br><em>Ponte</em></h1>
+    <p class="role">AI Automation · CRM · Real Estate &amp; Marketing Support</p>
+    <p class="tag">I help your business move.</p>
+    <div class="btns">
+      <a class="btn solid" href="#contact">Work with me</a>
+      <a class="btn" href="#automation">See my work</a>
+    </div>
+  </div>
+  <img src="assets/img/hero.webp" width="900" height="1000" alt="John Michael Ponte" fetchpriority="high">
+</header>
+
+<section id="about"><div class="wrap">
+  <div class="kicker">About me</div>
+  <h2>Systems that keep your business <em>moving</em>.</h2>
+  <p class="lead">I'm a Virtual Assistant who keeps marketing, CRM and client follow-up running so business owners can spend their time closing. I currently support the marketing of a US construction company, and I've managed CRMs, smart plans and campaigns for real estate teams. I build automations with n8n and Claude Code, edit short-form video and design on-brand graphics. Three years as a teacher and department coordinator gave me clear communication and organization; customer service for Canadian clients made me detail-oriented and client-first.</p>
+  <div class="grid g3">
+    <div class="card"><div class="num">01</div><h3>Workflow Automation</h3><p>Connecting apps and websites with APIs, HTTP requests and AI agents in n8n.</p></div>
+    <div class="card"><div class="num">02</div><h3>CRM Management</h3><p>Lofty, GoHighLevel and spreadsheets: pipelines, tags, smart plans and clean data.</p></div>
+    <div class="card"><div class="num">03</div><h3>Marketing &amp; Design</h3><p>Social posts, flyers, listing packets, email campaigns and landing pages in Canva.</p></div>
+    <div class="card"><div class="num">04</div><h3>Video Editing</h3><p>Testimonial reels, ads and social clips with captions, pacing and branding.</p></div>
+    <div class="card"><div class="num">05</div><h3>Data Entry &amp; Research</h3><p>Organizing data, online research and clear, usable reports.</p></div>
+    <div class="card"><div class="num">06</div><h3>Admin &amp; Customer Service</h3><p>Inbox and calendar management, inquiries and client communication.</p></div>
+  </div>
+</div></section>
+
+<section id="claude-code" class="cc"><div class="wrap">
+  <div class="kicker">Highlight</div>
+  <h2>Built with <em>Claude Code</em>.</h2>
+  <p class="lead">I use Claude Code as an AI teammate to deliver in hours what used to take days, and I turn the results into repeatable tools your team can run again and again.</p>
+  <div class="grid g2">
+    <div class="card"><div class="num">AI VIDEO EDITING</div><h3>HyperFrames &amp; HeyGen</h3><p>From raw Zoom calls to finished 9:16 reels: hooks, title cards, captions, music and branded outros, plus HeyGen avatars and voiceovers when you need them.</p><div class="chips"><span class="chip y">HyperFrames</span><span class="chip y">HeyGen</span><span class="chip">FFmpeg</span><span class="chip">Captions</span></div></div>
+    <div class="card"><div class="num">CUSTOM SKILLS</div><h3>SKILL.md playbooks</h3><p>I package a repeatable process (a reel template, a graphics workflow, a weekly report) into a Claude skill, so anyone on the team can run it with one command and get the same quality every time.</p><div class="chips"><span class="chip y">SKILL.md</span><span class="chip">Templates</span><span class="chip">SOPs</span></div></div>
+    <div class="card"><div class="num">N8N AUTOMATION</div><h3>Via Claude Code or by hand</h3><p>I design, validate and deploy n8n workflows straight from Claude Code, or build them manually in the n8n editor. Either way you get documented, working automations.</p><div class="chips"><span class="chip y">n8n</span><span class="chip">AI agents</span><span class="chip">APIs</span><span class="chip">Google Sheets</span></div></div>
+    <div class="card"><div class="num">TASK AUTOMATION</div><h3>Everyday work, automated</h3><p>Research, data cleanup, file and media processing, transcripts and reports: repetitive tasks turned into quick, reliable runs.</p><div class="chips"><span class="chip y">Claude Code</span><span class="chip">Research</span><span class="chip">Reports</span></div></div>
+  </div>
+</div></section>
+
+<section id="automation"><div class="wrap">
+  <div class="kicker">Automation projects</div>
+  <h2>n8n workflows with <em>AI agents</em>.</h2>
+  <p class="lead">Real workflows I designed and built. Click any image to see it full size.</p>
+
+  <div class="proj">
+    <a class="shot" href="assets/img/wf-contractor-inquiry.webp" target="_blank" rel="noopener"><img src="assets/img/wf-contractor-inquiry.webp" width="1800" height="639" loading="lazy" decoding="async" alt="AI inquiry desk workflow in n8n"></a>
+    <div>
+      <h3>AI Inquiry Desk for a Contractor</h3>
+      <ul>
+        <li><b>Problem:</b> project inquiries from Instagram get lost or answered late.</li>
+        <li><b>Built:</b> a Google Form feeds n8n; 3 AI agents score each inquiry, draft a personal reply and write a shift briefing.</li>
+        <li><b>Result:</b> one click per shift turns every new inquiry into a prioritized, ready-to-send reply in a shared spreadsheet.</li>
+      </ul>
+      <div class="chips"><span class="chip y">Multi-agent</span><span class="chip">OpenAI</span><span class="chip">Google Sheets</span><span class="chip">Merge / dedupe</span></div>
+    </div>
+  </div>
+
+  <div class="proj">
+    <a class="shot" href="assets/img/wf-speed-to-lead.webp" target="_blank" rel="noopener"><img src="assets/img/wf-speed-to-lead.webp" width="1800" height="630" loading="lazy" decoding="async" alt="Real estate speed-to-lead workflow in n8n"></a>
+    <div>
+      <h3>Real Estate Speed-to-Lead</h3>
+      <ul>
+        <li><b>Problem:</b> agents lose leads that wait hours for a reply.</li>
+        <li><b>Built:</b> a lead form and webhook into an AI analyst that scores hot, warm or cold, filters spam and writes a call script; a second agent replies in the lead's own language.</li>
+        <li><b>Result:</b> every lead is logged to the CRM sheet and answered within a minute; hot leads trigger a "call now" alert.</li>
+      </ul>
+      <div class="chips"><span class="chip y">AI agents</span><span class="chip">Webhooks</span><span class="chip">Gmail</span><span class="chip">CRM</span></div>
+    </div>
+  </div>
+
+  <div class="proj">
+    <a class="shot" href="assets/img/wf-job-hunter.webp" target="_blank" rel="noopener"><img src="assets/img/wf-job-hunter.webp" width="1800" height="349" loading="lazy" decoding="async" alt="Multi-agent job lead workflow in n8n"></a>
+    <div>
+      <h3>Multi-Agent Lead Hunter</h3>
+      <ul>
+        <li><b>Built:</b> scheduled Google searches feed a team of 4 agents: a Qualifier, a Researcher (web search + think tool), a Copywriter and a Reviewer.</li>
+        <li><b>Result:</b> only on-niche opportunities reach the sheet, each with a researched, edited, ready-to-send application.</li>
+      </ul>
+      <div class="chips"><span class="chip y">4 AI agents</span><span class="chip">Web search</span><span class="chip">HTTP API</span><span class="chip">Structured output</span></div>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="card" style="padding:0;overflow:hidden">
+      <a href="assets/img/wf-rag-chatbot.webp" target="_blank" rel="noopener"><img src="assets/img/wf-rag-chatbot.webp" width="1019" height="703" loading="lazy" decoding="async" alt="RAG chatbot workflow in n8n"></a>
+      <div style="padding:20px"><h3>RAG Knowledge Chatbot</h3><p>A chat agent with memory that answers questions from your own documents through a Pinecone vector store.</p></div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <a href="assets/img/wf-pinecone.webp" target="_blank" rel="noopener"><img src="assets/img/wf-pinecone.webp" width="1014" height="647" loading="lazy" decoding="async" alt="Document ingestion to Pinecone workflow in n8n"></a>
+      <div style="padding:20px"><h3>Auto Document Ingestion</h3><p>New files in Google Drive are split, embedded with OpenAI and stored in Pinecone automatically, so the chatbot is always up to date.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="video"><div class="wrap">
+  <div class="kicker">Video editing</div>
+  <h2>Reels that <em>hold attention</em>.</h2>
+  <p class="lead">From client testimonials and webinar promos to true-crime storytelling and comedy, edited with Claude Code + HyperFrames and Kdenlive: hooks, captions, title cards and pacing built for social.</p>
+  <div class="reels">
+    <figure style="margin:0"><video controls preload="none" playsinline poster="assets/video/reel-melissa-testimonial-webinar-v2.webp" width="720" height="1280"><source src="assets/video/reel-melissa-testimonial-webinar-v2.mp4" type="video/mp4"></video><figcaption>Client testimonial reel</figcaption></figure>
+    <figure style="margin:0"><video controls preload="none" playsinline poster="assets/video/reel-two-owners-webinar.webp" width="720" height="1280"><source src="assets/video/reel-two-owners-webinar.mp4" type="video/mp4"></video><figcaption>Webinar promo: "Two Owners"</figcaption></figure>
+    <figure style="margin:0"><video controls preload="none" playsinline poster="assets/video/reel-crime-story.webp" width="720" height="1280"><source src="assets/video/reel-crime-story.mp4" type="video/mp4"></video><figcaption>True-crime storytelling</figcaption></figure>
+    <figure style="margin:0"><video controls preload="none" playsinline poster="assets/video/reel-funny.webp" width="720" height="1280"><source src="assets/video/reel-funny.mp4" type="video/mp4"></video><figcaption>Comedy clip</figcaption></figure>
+  </div>
+</div></section>
+
+<section id="design"><div class="wrap">
+  <div class="kicker">Graphic design · Canva</div>
+  <h2>On-brand graphics that <em>get leads</em>.</h2>
+  <p class="lead">Ads, social posts, open house flyers and "Just Listed" / "Just Sold" packets that make listings stand out and keep a brand consistent.</p>
+
+  <p class="sub">Real estate packets</p>
+  <div class="grid g3 gallery">
+    <img src="assets/img/packet-0.webp" width="648" height="648" loading="lazy" decoding="async" alt="Under contract listing graphic">
+    <img src="assets/img/packet-1.webp" width="648" height="648" loading="lazy" decoding="async" alt="Open house graphic">
+    <img src="assets/img/packet-2.webp" width="648" height="648" loading="lazy" decoding="async" alt="Land listing graphic">
+    <img src="assets/img/packet-3.webp" width="714" height="714" loading="lazy" decoding="async" alt="Coming soon listing graphic">
+    <img src="assets/img/packet-4.webp" width="714" height="714" loading="lazy" decoding="async" alt="Land listing graphic">
+    <img src="assets/img/packet-5.webp" width="714" height="714" loading="lazy" decoding="async" alt="Land listing graphic">
+  </div>
+
+  <p class="sub">Stories &amp; vertical posts <span class="muted">(scroll →)</span></p>
+  <div class="scroller">
+    <img src="assets/img/story-0.webp" width="432" height="768" loading="lazy" decoding="async" alt="Story design">
+    <img src="assets/img/story-1.webp" width="432" height="768" loading="lazy" decoding="async" alt="Story design">
+    <img src="assets/img/story-2.webp" width="432" height="768" loading="lazy" decoding="async" alt="Story design">
+    <img src="assets/img/story-3.webp" width="432" height="768" loading="lazy" decoding="async" alt="Story design">
+    <img src="assets/img/story-4.webp" width="432" height="768" loading="lazy" decoding="async" alt="Story design">
+    <img src="assets/img/story-5.webp" width="432" height="768" loading="lazy" decoding="async" alt="Story design">
+    <img src="assets/img/story-6.webp" width="432" height="768" loading="lazy" decoding="async" alt="Story design">
+    <img src="assets/img/story-7.webp" width="432" height="768" loading="lazy" decoding="async" alt="Story design">
+  </div>
+
+  <p class="sub">Email campaigns, landing pages &amp; CRM smart plans</p>
+  <div class="grid g3 gallery">
+    <a href="assets/img/email-campaign.webp" target="_blank" rel="noopener"><img src="assets/img/email-campaign.webp" width="540" height="1200" loading="lazy" decoding="async" alt="Property listing email campaign"></a>
+    <a href="assets/img/landing-page.webp" target="_blank" rel="noopener"><img src="assets/img/landing-page.webp" width="900" height="848" loading="lazy" decoding="async" alt="Lead capture landing page"></a>
+    <a href="assets/img/lofty-smart-plan.webp" target="_blank" rel="noopener"><img src="assets/img/lofty-smart-plan.webp" width="900" height="487" loading="lazy" decoding="async" alt="Lofty smart plan setup"></a>
+  </div>
+</div></section>
+
+<section id="testimonials"><div class="wrap">
+  <div class="kicker">Client testimonials</div>
+  <h2>What clients <em>say</em>.</h2>
+  <p class="lead">Real feedback from US real estate clients.</p>
+  <div class="grid" style="gap:28px">
+    <div class="card tcard">
+      <div class="tvid"><video controls preload="none" playsinline poster="assets/video/testimonial-1.webp" width="720" height="600"><source src="assets/video/testimonial-1.mp4" type="video/mp4"></video></div>
+      <div><blockquote>He's helped us migrate those contacts… he's been super helpful just helping us think through all of those things so that we can go ahead and execute them.</blockquote><div class="who">Real estate team owners, USA · CRM migration &amp; smart plans</div></div>
+    </div>
+    <div class="card tcard">
+      <div class="tvid"><video controls preload="none" playsinline poster="assets/video/testimonial-2.webp" width="960" height="526"><source src="assets/video/testimonial-2.mp4" type="video/mp4"></video></div>
+      <div><blockquote>Your performance has been amazing. We give you a 10-star, five-star rating, especially for being so flexible and helping us adjust and transition.</blockquote><div class="who">Real estate business owners, USA</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="experience"><div class="wrap">
+  <div class="grid g2" style="gap:48px">
+    <div>
+      <div class="kicker">Experience</div>
+      <h2 style="margin-bottom:28px">Where I've <em>worked</em>.</h2>
+      <div class="xp">
+        <div><b>Virtual Assistant, Marketing</b><span>Construction company (USA) · Present</span><p>Marketing support, content and lead-handling systems.</p></div>
+        <div><b>Real Estate Virtual Assistant</b><span>May 2026 – Present · Part-time</span><p>CRM management, smart plans and digital campaigns, graphic design, blogs, and building and managing the client's website.</p></div>
+        <div><b>Private English Tutor</b><span>Jun 2024 – Apr 2026</span><p>Grades 4–6 and junior high school.</p></div>
+        <div><b>Teacher &amp; Department Coordinator</b><span>The Mary Bree Village Montessori School · 2021 – 2025</span><p>Taught 34 students; promoted to coordinate the Upper Elementary department and train new teachers.</p></div>
+        <div><b>Logistics Operations Associate</b><span>Shopee Xpress · Jun 2023 – Jul 2024</span><p>Sorting, routing and returns under tight operational deadlines.</p></div>
+        <div><b>Customer Service Representative</b><span>Virgin Mobile · May 2019 – Jul 2020</span><p>Inbound and outbound calls for Canadian clients across billing, sales and tech support.</p></div>
+      </div>
+    </div>
+    <div>
+      <div class="kicker">Tools</div>
+      <h2 style="margin-bottom:28px">What I <em>use</em>.</h2>
+      <p class="sub" style="margin-top:0">AI &amp; automation</p>
+      <div class="chips"><span class="chip y">Claude Code</span><span class="chip y">Claude</span><span class="chip y">n8n</span><span class="chip">HyperFrames</span><span class="chip">HeyGen</span><span class="chip">ElevenLabs</span></div>
+      <p class="sub">CRM &amp; marketing</p>
+      <div class="chips"><span class="chip y">GoHighLevel</span><span class="chip y">Lofty</span><span class="chip">Meta Business Suite</span><span class="chip">Canva</span></div>
+      <p class="sub">Video</p>
+      <div class="chips"><span class="chip">Kdenlive</span><span class="chip">HyperFrames</span></div>
+      <p class="sub">Productivity</p>
+      <div class="chips"><span class="chip">Google Workspace</span><span class="chip">Microsoft Office</span></div>
+      <div class="kicker" style="margin-top:48px">Education</div>
+      <div class="xp">
+        <div><b>Master in Education, English</b><span>University of Northeastern Philippines · 2024 – Present</span></div>
+        <div><b>Bachelor of Secondary Education, English</b><span>Bicol State College of Applied Sciences and Technology · 2015 – 2019</span></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<section id="contact" class="contact"><div class="wrap">
+  <div class="kicker">Contact</div>
+  <h2>Let's take your business to the <em>next level</em>.</h2>
+  <p class="lead">Tell me what's slowing you down, and I'll show you how to automate it.</p>
+  <div class="btns">
+    <a class="btn solid" href="mailto:pontejohnmichael@gmail.com">pontejohnmichael@gmail.com</a>
+    <a class="btn" href="https://wa.me/639626920750" target="_blank" rel="noopener">WhatsApp +63 962 692 0750</a>
+  </div>
+</div></section>
+
+<footer>© 2026 John Michael Ponte · Naga City, Philippines · Available for remote work worldwide</footer>
+</body>
+</html>
