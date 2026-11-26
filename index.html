@@ -74,6 +74,16 @@ nav ul a:hover{color:var(--text);text-decoration:none}
 .card:not(.tcard):hover{position:relative;z-index:2;transform:scale(1.1);box-shadow:0 14px 30px rgba(0,0,0,.18)}
 .btn:hover{transform:scale(1.1)}
 .belt{padding:70px 0;margin:-60px 0}  /* room above/below so a grown image is not cut off */
+/* sage cards in the lower sections, same look as the About cards */
+.tcard,.tool,.xp>div{background:var(--sage);border-color:var(--sage)}
+.tcard .who,.xp>div span,.xp>div p{color:#22302d}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tool{padding:18px}.tool .sub{margin:0 0 4px;color:var(--y);font-weight:700}
+.tool .chip{border-color:#7fa59c;color:var(--text)}.tool .chip.y{border-color:var(--y);color:var(--y);background:#fff6}
+.xp>div{border:1px solid var(--sage);border-radius:var(--r);padding:16px 20px;margin-bottom:16px;transition:transform .25s ease,box-shadow .25s ease}
+.xp>div b{color:var(--text)}
+.xp>div:hover{position:relative;z-index:2;transform:scale(1.1);box-shadow:0 14px 30px rgba(0,0,0,.18)}
+@media (max-width:520px){.tools{grid-template-columns:1fr}}
 /* claude code highlight */
 .cc{background:var(--sage)}
 .cc .lead,.cc .card p{color:#22302d}
@@ -106,7 +116,7 @@ blockquote::before{content:"\201C";display:block;color:var(--y);font-size:56px;l
 /* experience */
 .xp{border-left:2px solid var(--line);padding-left:22px}
 .xp div{position:relative;margin-bottom:26px}
-.xp div::before{content:"";position:absolute;left:-29px;top:7px;width:12px;height:12px;border-radius:50%;background:var(--y);box-shadow:0 0 0 3px var(--sage)}
+.xp div::before{content:"";position:absolute;left:-30px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--y);box-shadow:0 0 0 3px var(--sage)}
 .xp b{display:block}
 .xp span{color:var(--muted);font-size:14px}
 .xp p{margin:4px 0 0;color:var(--muted);font-size:15px}
@@ -327,14 +337,12 @@ footer{padding:28px 0;background:#141414;color:#cfc6b4;font-size:13px;text-align
     <div>
       <div class="kicker">Tools</div>
       <h2 style="margin-bottom:28px">What I <em>use</em>.</h2>
-      <p class="sub" style="margin-top:0">AI &amp; automation</p>
-      <div class="chips"><span class="chip y">Claude Code</span><span class="chip y">Claude</span><span class="chip y">n8n</span><span class="chip">HyperFrames</span><span class="chip">HeyGen</span><span class="chip">ElevenLabs</span></div>
-      <p class="sub">CRM &amp; marketing</p>
-      <div class="chips"><span class="chip y">GoHighLevel</span><span class="chip y">Lofty</span><span class="chip">Meta Business Suite</span><span class="chip">Canva</span></div>
-      <p class="sub">Video</p>
-      <div class="chips"><span class="chip">Kdenlive</span><span class="chip">HyperFrames</span></div>
-      <p class="sub">Productivity</p>
-      <div class="chips"><span class="chip">Google Workspace</span><span class="chip">Microsoft Office</span></div>
+      <div class="tools">
+      <div class="card tool"><p class="sub">AI &amp; automation</p><div class="chips"><span class="chip y">Claude Code</span><span class="chip y">Claude</span><span class="chip y">n8n</span><span class="chip">HyperFrames</span><span class="chip">HeyGen</span><span class="chip">ElevenLabs</span></div></div>
+      <div class="card tool"><p class="sub">CRM &amp; marketing</p><div class="chips"><span class="chip y">GoHighLevel</span><span class="chip y">Lofty</span><span class="chip">Meta Business Suite</span><span class="chip">Canva</span></div></div>
+      <div class="card tool"><p class="sub">Video</p><div class="chips"><span class="chip">Kdenlive</span><span class="chip">HyperFrames</span></div></div>
+      <div class="card tool"><p class="sub">Productivity</p><div class="chips"><span class="chip">Google Workspace</span><span class="chip">Microsoft Office</span></div></div>
+      </div>
       <div class="kicker" style="margin-top:48px">Education</div>
       <div class="xp">
         <div><b>Master in Education, English</b><span>University of Northeastern Philippines · 2024 – Present</span></div>
