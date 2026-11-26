@@ -93,6 +93,7 @@ nav ul a:hover{color:var(--text);text-decoration:none}
 .belt img{height:280px;width:auto;max-width:none;border-radius:10px;border:1px solid var(--line)}
 .belt.tall img{height:400px}
 .belt:hover .track{animation-play-state:paused}
+.belt .track{position:relative}.belt .track:hover{z-index:2}
 @media (prefers-reduced-motion:reduce){.belt .track{animation:none}.belt{overflow-x:auto}.belt .track[aria-hidden]{display:none}}
 @media (max-width:520px){.belt img{height:200px}.belt.tall img{height:300px}}
 .gallery img{border-radius:10px;border:1px solid var(--line);width:100%}
