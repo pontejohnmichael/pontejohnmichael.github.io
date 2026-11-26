@@ -114,6 +114,17 @@ blockquote::before{content:"\201C";display:block;color:var(--y);font-size:56px;l
 .contact{text-align:center}
 .contact .lead{margin:0 auto 30px}
 .contact .btns{justify-content:center}
+/* mini game: warrior stands on the footer bar */
+#contact{padding-bottom:0}
+.arena{position:relative;margin-top:56px}
+#game{display:block;width:100%;height:180px;touch-action:manipulation}
+.pad{display:none;justify-content:space-between}
+.pad span{display:flex;gap:10px}
+.pad button{width:52px;height:52px;border-radius:50%;border:2px solid var(--text);background:var(--card);color:var(--text);font-size:20px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.pad button:active{background:var(--sage)}
+.pad .hit{background:var(--y);border-color:var(--y);color:#fff}
+@media (pointer:coarse){.pad{display:flex;padding:0 16px 8px}.arena #gameBtn{top:68px}}  /* touch screens only */
+#gameBtn{position:absolute;top:8px;right:20px;padding:6px 16px;font-size:13px;cursor:pointer;font-family:inherit}
 footer{padding:28px 0;background:#141414;color:#cfc6b4;font-size:13px;text-align:center;border-top:1px solid var(--line)}
 @media (max-width:860px){
   nav ul{display:none}
@@ -341,7 +352,148 @@ footer{padding:28px 0;background:#141414;color:#cfc6b4;font-size:13px;text-align
     <a class="btn solid" href="mailto:pontejohnmichael@gmail.com">pontejohnmichael@gmail.com</a>
     <a class="btn" href="https://wa.me/639626920750" target="_blank" rel="noopener">WhatsApp +63 962 692 0750</a>
   </div>
-</div></section>
+</div>
+<div class="arena">
+  <div class="pad" aria-hidden="true">
+    <span><button data-k="ArrowLeft">◀</button><button data-k="ArrowRight">▶</button></span>
+    <span><button data-k="ArrowDown">▼</button><button data-k="ArrowUp">▲</button><button data-k="x" class="hit">⚔</button></span>
+  </div>
+  <canvas id="game" height="180" role="img" aria-label="Pixel warrior mini game. Press Start, then use the arrow keys to move, jump and duck, and X to swing at zombies and bats."></canvas>
+  <button id="gameBtn" class="btn solid" type="button">Start</button>
+</div>
+<script>
+(() => {
+  const cv = document.getElementById('game'), ctx = cv.getContext('2d'), btn = document.getElementById('gameBtn');
+  const S = 4, H = 180, REACH = 72, SPEED = 190, JUMP = 520, GRAV = 1300;
+  const pal = {H:'#8a8f98',S:'#f1c27d',K:'#141414',R:'#e73213',Y:'#f5c518',B:'#3b2a1a',L:'#4f4a42',G:'#7fa36b',D:'#3d5a2e',T:'#5b6e8c',P:'#4a3f35',V:'#3a2e4a'};
+  const hero = ['..HHHHHH..','.HHHHHHHH.','.HHSSSSHH.','..SSKSSK..','..SSSSSS..','...SSSS...','.RRRRRRRR.','SRRYRRYRRS','SRRRRRRRRS','.RRBBBBRR.','..LLLLLL..','..LL..LL..','..LL..LL..','.BBB..BBB.'];
+  const duck = ['..HHHHHH..','.HHHHHHHH.','.HHSSSSHH.','..SSKSSK..','.RRRRRRRR.','SRRYRRYRRS','.RRBBBBRR.','.LLL..LLL.','BBBB..BBBB'];
+  const zTop = ['...GGGG...','..GGGGGG..','..GKGGKG..','..GGGGGG..','...GDDG...','..TTTTTT..','GGGGTTTT..','..TTTTTT..','..TTTTTT..','..PPPPPP..'];
+  const walk = [zTop.concat(['..PP..PP..','..PP..PP..','..PP..PP..','.BBB..BBB.']), zTop.concat(['.PP...PP..','.PP....PP.','.PP....PP.','BBB....BBB'])];
+  const bat = [['V.........V','VV..V.V..VV','VVVVVVVVVVV','.VVVRVRVVV.','....VVV....'], ['....V.V....','...VVVVV...','.VVVRVRVVV.','VVV.VVV.VVV','V.........V']];
+  const crawl = [['.GGG..........','GKGG.TTTTTTPP.','GGGGTTTTTTTPPP','GG.GGTTTTTT.PP','.G..G.........'], ['.GGG..........','GKGG.TTTTTTPP.','GGGGTTTTTTTPPP','GG.GGTTTTTT.PP','..G..G........']];
+  const heart = ['.R.R.','RRRRR','.RRR.','..R..'];
+  // enemy kinds: box = [halfWidth, top, bottom] measured up from the ground; crawlers only die to a ducking swing
+  const KIND = {
+    walker: { frames: walk,  w: 40, h: 56, box: [12, 56, 0],  y: 0,  spd: s => Math.min(50 + s * 1.5, 140) + Math.random() * 20, slashable: true },
+    bat:    { frames: bat,   w: 44, h: 20, box: [18, 57, 37], y: 37, spd: () => 90 + Math.random() * 60,  slashable: true },
+    crawl:  { frames: crawl, w: 56, h: 20, box: [20, 18, 0],  y: 0,  spd: () => 100 + Math.random() * 30, slashable: false },
+  };
+  let W = 0, running = false, over = false, foes = [], poofs = [], score = 0, hearts = 3, spawnT = 0,
+      swingT = 0, cd = 0, hurtT = 0, facing = 1, last = 0, hx = 0, hy = 0, vy = 0;
+  const keys = {};
+
+  function sprite(rows, x, y, flip, s = S, tint) {
+    const w = rows[0].length;
+    rows.forEach((row, r) => { for (let c = 0; c < w; c++) {
+      const ch = row[c]; if (ch === '.') continue;
+      ctx.fillStyle = tint || pal[ch];
+      ctx.fillRect(x + (flip ? w - 1 - c : c) * S * (s / S), y + r * s, s, s);
+    }});
+  }
+  const ducking = () => keys.ArrowDown && hy === 0;
+  const heroBox = () => [hx - 10, H - hy - (ducking() ? 36 : 56), H - hy];   // [left-ish centre-10, top, bottom] in px
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    W = cv.clientWidth; cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.imageSmoothingEnabled = false;
+    if (!running) hx = W / 2;
+    render();
+  }
+  function render() {
+    ctx.clearRect(0, 0, W, H);
+    const d = ducking(), top = H - hy - (d ? 36 : 56), x = hx - 20;
+    if (!(hurtT > 0 && Math.floor(hurtT * 20) % 2)) {
+      sprite(d ? duck : hero, x, top, facing < 0);
+      const hand = facing > 0 ? x + 38 : x - 2, hy0 = top + (d ? 22 : 26);
+      ctx.fillStyle = pal.Y; ctx.fillRect(hand - 2, hy0, 8, 4);            // hilt
+      ctx.fillStyle = '#d9d9d9';
+      if (swingT > 0) {                                                   // blade out + slash
+        ctx.fillRect(facing > 0 ? hand + 4 : hand - 34, hy0, 34, 4);
+        ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 3; ctx.beginPath();
+        ctx.arc(hx, hy0, 58, facing > 0 ? -1.1 : Math.PI - .2, facing > 0 ? .2 : Math.PI + 1.1); ctx.stroke();
+      } else ctx.fillRect(hand, hy0 - 28, 4, 28);                          // blade up
+    }
+    foes.forEach(f => { const k = KIND[f.kind];
+      sprite(k.frames[Math.floor(f.t * (f.kind === 'bat' ? 10 : 6)) % 2], f.x - k.w / 2, H - k.y - k.h + (f.kind === 'bat' ? Math.sin(f.t * 6) * 2 : 0), f.dir > 0); });
+    poofs.forEach(p => { ctx.fillStyle = `rgba(127,163,107,${1 - p.t / .35})`;
+      for (let i = 0; i < 8; i++) { const a = i * .785, r = 10 + p.t * 90; ctx.fillRect(p.x + Math.cos(a) * r, p.y + Math.sin(a) * r, 6, 6); } });
+    ctx.font = '600 13px Inter,system-ui,sans-serif'; ctx.textBaseline = 'top';
+    if (running || over) {
+      for (let i = 0; i < 3; i++) sprite(heart, 20 + i * 20, 14, false, 3, i < hearts ? null : '#c9bea8');
+      ctx.fillStyle = '#141414'; ctx.fillText('Score ' + score, 90, 13);
+    }
+    ctx.fillStyle = '#141414';
+    if (!running) ctx.fillText(over ? `Game over, score ${score}. Press Start to play again.`
+      : W < 640 ? 'Press Start, then use the buttons.' : 'Press Start. ← → move, ↑ jump, ↓ duck, X swing. Duck + X hits crawlers.', 20, over ? 36 : 14);
+  }
+  function hits(f, [l, t, b]) {   // hero box vs enemy box, both measured in canvas px
+    const k = KIND[f.kind];
+    return Math.abs(f.x - hx) < k.box[0] + 10 && (H - k.box[1]) < b && (H - k.box[2]) > t;
+  }
+  function frame(now) {
+    if (!running) return;
+    const dt = Math.min((now - last) / 1000 || 0, .05); last = now;
+    const dir = (keys.ArrowRight ? 1 : 0) - (keys.ArrowLeft ? 1 : 0);
+    if (dir) facing = dir;
+    if (!ducking()) hx = Math.max(20, Math.min(W - 20, hx + dir * SPEED * dt));
+    vy -= GRAV * dt; hy = Math.max(0, hy + vy * dt); if (hy === 0) vy = 0;
+    if ((spawnT -= dt) <= 0) {
+      const r = Math.random(), kind = r < .5 ? 'walker' : r < .75 ? 'bat' : 'crawl', d = Math.random() < .5 ? 1 : -1;
+      foes.push({ kind, dir: d, x: d > 0 ? -40 : W + 40, spd: KIND[kind].spd(score), t: Math.random() });
+      spawnT = Math.max(.6, 1.6 - score * .03);
+    }
+    const box = heroBox();
+    foes = foes.filter(f => {
+      f.x += f.dir * f.spd * dt; f.t += dt;
+      if (hurtT <= 0 && hits(f, box)) { hearts--; hurtT = 1; return false; }
+      if (f.x < -60 || f.x > W + 60) { score++; return false; }          // dodged it
+      return true;
+    });
+    swingT -= dt; cd -= dt; hurtT -= dt;
+    poofs = poofs.filter(p => (p.t += dt) < .35);
+    if (hearts <= 0) { running = false; over = true; foes = []; hurtT = 0; btn.textContent = 'Start'; }
+    render();
+    if (running) requestAnimationFrame(frame);
+  }
+  function attack() {
+    if (!running || cd > 0) return;
+    cd = .22; swingT = .15;
+    const swordY = H - hy - (ducking() ? 14 : 30);
+    const hit = foes.filter(f => { const k = KIND[f.kind], dx = (f.x - hx) * facing;
+        return (k.slashable || ducking()) && dx > -10 && dx < REACH && H - k.box[1] < swordY + 20 && H - k.box[2] > swordY - 20; })
+      .sort((a, b) => Math.abs(a.x - hx) - Math.abs(b.x - hx))[0];
+    if (hit) { foes.splice(foes.indexOf(hit), 1); poofs.push({ x: hit.x, y: H - KIND[hit.kind].y - KIND[hit.kind].h / 2, t: 0 }); score++; }
+  }
+  btn.addEventListener('click', () => {
+    if (running) { running = false; over = false; foes = []; poofs = []; hx = W / 2; hy = vy = 0; btn.textContent = 'Start'; render(); return; }
+    running = true; over = false; foes = []; poofs = []; score = 0; hearts = 3; spawnT = .6; hurtT = 0; facing = 1;
+    hx = W / 2; hy = vy = 0; btn.textContent = 'Quit'; last = performance.now(); requestAnimationFrame(frame);
+  });
+  const GAME_KEYS = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'x', 'X'];
+  function input(k, down) {
+    if (k === 'x' || k === 'X') { if (down) attack(); }
+    else if (k === 'ArrowUp') { if (down && running && hy === 0) vy = JUMP; }
+    else keys[k] = down;
+  }
+  document.addEventListener('keydown', e => {
+    if (!running || !GAME_KEYS.includes(e.key)) return;
+    e.preventDefault();                                   // stop arrows scrolling the page mid-game
+    input(e.key, true);
+  });
+  document.addEventListener('keyup', e => { keys[e.key] = false; });
+  document.querySelectorAll('.pad button').forEach(b => {   // phone buttons: hold to move/duck, tap to jump/swing
+    b.addEventListener('pointerdown', e => { e.preventDefault(); input(b.dataset.k, true); });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(t => b.addEventListener(t, () => input(b.dataset.k, false)));
+    b.addEventListener('contextmenu', e => e.preventDefault());
+  });
+  addEventListener('blur', () => { for (const k in keys) keys[k] = false; });
+  cv.addEventListener('pointerdown', attack);
+  addEventListener('resize', resize);
+  resize();
+})();
+</script>
+</section>
 
 <footer>© 2026 John Michael Ponte · Naga City, Philippines · Available for remote work worldwide</footer>
 </body>
